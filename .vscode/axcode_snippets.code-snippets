@@ -1,0 +1,671 @@
+{
+  // Функциональные блоки plc/fb_base.h
+
+  "Execute FB": {
+    "scope": "cpp",
+    "prefix": "execute",
+    "body": [
+      "$1.execute = true;",
+      "if ($1.done())",
+      "{",
+      "  $2",
+      "  $1.execute = false;",
+      "} else if ($1.error())",
+      "{",
+      "  $3",
+      "  $1.execute = false;",
+      "}",
+      "$1();"
+    ],
+    "description": "Execute FB"
+  },
+  
+  // Функциональные блоки plc/fb_debug.h
+
+  "DebugPort": {
+    "scope": "cpp",
+    "prefix": "DebugPort",
+    "body": [
+      "DebugPort<${2:1024}> ${1:debug_port} ({",
+      "  // Номер COM-порта",
+      "  .com            = ${3|COM1,COM2,COM3,COM_USB|},",
+      "  // Скорость обмена, бит/с",
+      "  .baudrate       = ${4|115200,256000,128000,76800,57600,38400,28800,19200,14400,9600,4800,2400|},",
+      "  // Четность",
+      "  .parity         = ${5|COM_PARITY_NONE,COM_PARITY_ODD,COM_PARITY_EVEN|},",
+      "  // Кол-во стоп-битов",
+      "  .stop_bits      = ${6|1,2|},",
+      "  // Отправлять отладочные сообщения",
+      "  .debug_messages = ${7|true,false|},",
+      "  // Отправлять сообщения событий",
+      "  .event_messages = ${8|true,false|},",
+      "  // Отправлять сообщения ошибок",
+      "  .error_messages = ${9|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок порта отладки с изменяемым размером буфера отладки"
+  },
+
+  // Функциональные блоки plc/fb_device_alphax.h
+  
+  "AlphaXModule_DiscreteInputSetup": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_DiscreteInputSetup",
+    "body": [
+      "AlphaXModule_DiscreteInputSetup ${1:discrete_inputs_setup} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master    = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device    = &${3:alphax_module},",
+      "  // Номер настраиваемого канала",
+      "  .channel   = AlphaXModule::${4|DINPUT_CHANNEL1,DINPUT_CHANNEL2,DINPUT_CHANNEL3,DINPUT_CHANNEL4,DINPUT_CHANNEL5,DINPUT_CHANNEL6,DINPUT_CHANNEL7,DINPUT_CHANNEL8,DINPUT_CHANNEL9,DINPUT_CHANNEL10,DINPUT_CHANNEL11,DINPUT_CHANNEL12,DINPUT_CHANNEL13,DINPUT_CHANNEL14,DINPUT_CHANNEL15,DINPUT_CHANNEL16|},",
+      "  // Записывать задержку включения (TON) DI",
+      "  .write_ton = ${5|true,false|},",
+      "  // Записывать задержку выключения (TOF) DI",
+      "  .write_tof = ${6|true,false|},",
+      "  // Задержка включения (TON) DI, x * 500 мкс",
+      "  .ton       = ${7:20},",
+      "  // Задержка выключения (TOF) DI, x * 500 мкс",
+      "  .tof       = ${8:20}",
+      "});\n"
+    ],
+    "description": "Функциональный блок настройки дискретных входов модулей Alpha-X"
+  },
+
+  "AlphaXModule_DiscreteInputReadSettings": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_DiscreteInputReadSettings",
+    "body": [
+      "AlphaXModule_DiscreteInputReadSettings ${1:discrete_input_read_settings} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master   = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device   = &${3:alphax_module},",
+      "  // Номер считываемого канала",
+      "  .channel  = AlphaXModule::${4|DINPUT_CHANNEL1,DINPUT_CHANNEL2,DINPUT_CHANNEL3,DINPUT_CHANNEL4,DINPUT_CHANNEL5,DINPUT_CHANNEL6,DINPUT_CHANNEL7,DINPUT_CHANNEL8,DINPUT_CHANNEL9,DINPUT_CHANNEL10,DINPUT_CHANNEL11,DINPUT_CHANNEL12,DINPUT_CHANNEL13,DINPUT_CHANNEL14,DINPUT_CHANNEL15,DINPUT_CHANNEL16|},",
+      "  // Считать задержку включения (TON) DI",
+      "  .read_ton = ${5|true,false|},",
+      "  // Считать задержку выключения (TOF) DI",
+      "  .read_tof = ${6|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок чтения настроек дискретных входов модулей Alpha-X"
+  },
+
+  "AlphaXModule_DiscreteOutputSetup": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_DiscreteOutputSetup",
+    "body": [
+      "AlphaXModule_DiscreteOutputSetup ${1:discrete_output_setup} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master               = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device               = &${3:alphax_module},",
+      "  // Номер настраиваемого канала",
+      "  .channel              = AlphaXModule::${4|DOUTPUT_CHANNEL1,DOUTPUT_CHANNEL2,DOUTPUT_CHANNEL3,DOUTPUT_CHANNEL4,DOUTPUT_CHANNEL5,DOUTPUT_CHANNEL6,DOUTPUT_CHANNEL7,DOUTPUT_CHANNEL8,DOUTPUT_CHANNEL9,DOUTPUT_CHANNEL10,DOUTPUT_CHANNEL11,DOUTPUT_CHANNEL12,DOUTPUT_CHANNEL13,DOUTPUT_CHANNEL14,DOUTPUT_CHANNEL15,DOUTPUT_CHANNEL16|},",
+      "  // Записывать период ШИМ выхода",
+      "  .write_pwm_period     = ${5|true,false|},",
+      "  // Записывать скважность ШИМ выхода",
+      "  .write_pwm_duty_cycle = ${6|true,false|},",
+      "  // Записывать задержку включения (TON) выхода",
+      "  .write_ton            = ${7|true,false|},",
+      "  // Записывать задержку выключения (TOF) выхода",
+      "  .write_tof            = ${8|true,false|},",
+      "  // Период ШИМ, x * 100 мс",
+      "  .pwm_period           = ${9:0},",
+      "  // Скважность ШИМ выхода, % * 100",
+      "  .pwm_duty_cycle       = ${10:0},",
+      "  // Задержка включения (TON) выхода, x * 1 с",
+      "  .ton                  = ${11:0},",
+      "  // Задержка выключения (TOF) выхода, x * 1 с",
+      "  .tof                  = ${12:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок настройки дискретных выходов модулей Alpha-X"
+  },
+
+  "AlphaXModule_DiscreteOutputReadSettings": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_DiscreteOutputReadSettings",
+    "body": [
+      "AlphaXModule_DiscreteOutputReadSettings ${1:discrete_output_read_settings} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master              = &${2:modbus_master},",
+      "  // Считываемое устройство",
+      "  .device              = &${3:alphax_module},",
+      "  // Номер считываемого канала",
+      "  .channel             = AlphaXModule::${4|DOUTPUT_CHANNEL1,DOUTPUT_CHANNEL2,DOUTPUT_CHANNEL3,DOUTPUT_CHANNEL4,DOUTPUT_CHANNEL5,DOUTPUT_CHANNEL6,DOUTPUT_CHANNEL7,DOUTPUT_CHANNEL8,DOUTPUT_CHANNEL9,DOUTPUT_CHANNEL10,DOUTPUT_CHANNEL11,DOUTPUT_CHANNEL12,DOUTPUT_CHANNEL13,DOUTPUT_CHANNEL14,DOUTPUT_CHANNEL15,DOUTPUT_CHANNEL16|},",
+      "  // Считать период ШИМ выхода",
+      "  .read_pwm_period     = ${5|true,false|},",
+      "  // Считать скважность ШИМ выхода",
+      "  .read_pwm_duty_cycle = ${6|true,false|},", 
+      "  // Считать задержку включения (TON) выхода",
+      "  .read_ton            = ${7|true,false|},",
+      "  // Считать задержку выключения (TOF) выхода",
+      "  .read_tof            = ${8|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок чтения настроек дискретных выходов модулей Alpha-X"
+  },
+
+  "AlphaXModule_AnalogInputSetup": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_AnalogInputSetup",
+    "body": [
+      "AlphaXModule_AnalogInputSetup ${1:analog_input_setup} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master               = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device               = &${3:alphax_module},",
+      "  // Номер настраиваемого канала",
+      "  .channel              = AlphaXModule::${4|AINPUT_CHANNEL1,AINPUT_CHANNEL2,AINPUT_CHANNEL3,AINPUT_CHANNEL4,AINPUT_CHANNEL5,AINPUT_CHANNEL6,AINPUT_CHANNEL7,AINPUT_CHANNEL8|},",
+      "  // Записывать тип датчика",
+      "  .write_type           = ${5|true,false|},",
+      "  // Записывать степень фильтрации сигнала",
+      "  .write_filter         = ${6|true,false|},",
+      "  // Записывать нижнее значение для приведения к пользовательской шкале",
+      "  .write_normalize_low  = ${7|true,false|},",
+      "  // Записывать верхнее значение для приведения к пользовательской шкале",
+      "  .write_normalize_high = ${8|true,false|},",
+      "  // Записывать нижний уровень аналогового сигнала",
+      "  .write_level_low      = ${9|true,false|},",
+      "  // Записывать верхний уровень аналогового сигнала",
+      "  .write_level_high     = ${10|true,false|},",
+      "  // Записывать нижнее аварийное значение сигнала",
+      "  .write_alarm_low      = ${11|true,false|},",
+      "  // Записывать верхнее аварийное значение сигнала",
+      "  .write_alarm_high     = ${12|true,false|},",
+      "  // Записывать наклон характеристики измерительного входа",
+      "  .write_slope          = ${13|true,false|},",
+      "  // Записывать сдвиг характеристики измерительного входа",
+      "  .write_shift          = ${14|true,false|},",
+      "  // Записывать положение десятичной точки аналогового входа",
+      "  .write_decimal        = ${15|true,false|},",
+      "  // Записывать отключение режекторного фильтра",
+      "  .write_disable_notch_filter = ${16|true,false|},",
+      "  // Записывать компенсацию температуры холодного спая",
+      "  .write_junction       = ${17|true,false|},",
+      "  // Тип подключаемого датчика",
+      "  .type                 = alphax_parameter::AINPUT_TYPE::${18|SENSOR_50M,SENSOR_PT100,SENSOR_100P,SENSOR_PT1000,SENSOR_J,SENSOR_K,SENSOR_L,SENSOR_B,SENSOR_S,UNIFIED_0_20_MA,UNIFIED_4_20_MA,UNIFIED_0_10_V,DISABLED|},",
+      "  // Степень фильтрации сигнала",
+      "  .filter               = ${19|2,0,1,3,4,5,6,7,8|},",
+      "  // Нижнее значение для приведения к пользовательской шкале (ед. изм.)",
+      "  .normalize_low        = ${20:0},",
+      "  // Верхнее значение для приведения к пользовательской шкале (ед. изм.)",
+      "  .normalize_high       = ${21:10000},",
+      "  // Коррекция нижнего уровня аналогового сигнала",
+      "  .level_low            = ${22:0},",
+      "  // Коррекция верхнего уровня аналогового сигнала",
+      "  .level_high           = ${23:10000},",
+      "  // Нижнее аварийное значение сигнала в пользовательском диапазоне",
+      "  .alarm_low            = ${24:0},",
+      "  // Верхнее аварийное значение сигнала в пользовательском диапазоне",
+      "  .alarm_high           = ${25:10000},",
+      "  // Наклон характеристики измерительного входа",
+      "  .slope                = ${26:1000},",
+      "  // Сдвиг характеристики измерительного входа, (ед. изм.)",
+      "  .shift                = ${27:0},",
+      "  // Положение десятичной точки аналогового входа",
+      "  .decimal              = ${28|2,0,1,3|},",
+      "  // Отключение режекторного фильтра",
+      "  .disable_notch_filter = ${29|false,true|},",
+      "  // Компенсация температуры холодного спая",
+      "  .junction             = alphax_parameter::AINPUT_JUNCTION::${30|INTERNAL,DISABLED,AINPUT1,AINPUT2,AINPUT3,AINPUT4,AINPUT5,AINPUT6,AINPUT7,AINPUT8|},",
+      "});\n"
+    ],
+    "description": " Функциональный блок настройки аналоговых входов модулей Alpha-X"
+  },
+
+  "AlphaXModule_AnalogInputReadSettings": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_AnalogInputReadSettings",
+    "body": [
+      "AlphaXModule_AnalogInputReadSettings ${1:analog_input_read_settings} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master              = &${2:modbus_master},",
+      "  // Считываемое устройство",
+      "  .device              = &${3:alphax_module},",
+      "  // Номер считываемого канала",
+      "  .channel             = AlphaXModule::${4|AINPUT_CHANNEL1,AINPUT_CHANNEL2,AINPUT_CHANNEL3,AINPUT_CHANNEL4,AINPUT_CHANNEL5,AINPUT_CHANNEL6,AINPUT_CHANNEL7,AINPUT_CHANNEL8|},",
+      "  // Считать тип датчика",
+      "  .read_type           = ${5|true,false|},",
+      "  // Считать степень фильтрации сигнала",
+      "  .read_filter         = ${6|true,false|},",
+      "  // Считать нижнее значение для приведения к пользовательской шкале",
+      "  .read_normalize_low  = ${7|true,false|},",
+      "  // Считать верхнее значение для приведения к пользовательской шкале",
+      "  .read_normalize_high = ${8|true,false|},",
+      "  // Считать нижний уровень аналогового сигнала",
+      "  .read_level_low      = ${9|true,false|},",
+      "  // Считать верхний уровень аналогового сигнала",
+      "  .read_level_high     = ${10|true,false|},",
+      "  // Считать нижнее аварийное значение сигнала",
+      "  .read_alarm_low      = ${11|true,false|},",
+      "  // Считать верхнее аварийное значение сигнала",
+      "  .read_alarm_high     = ${12|true,false|},",
+      "  // Считать наклон характеристики измерительного входа",
+      "  .read_slope          = ${13|true,false|},",
+      "  // Считать сдвиг характеристики измерительного входа",
+      "  .read_shift          = ${14|true,false|},",
+      "  // Считать положение десятичной точки аналогового входа",
+      "  .read_decimal        = ${15|true,false|},",
+      "  // Считать отключение режекторного фильтра",
+      "  .read_disable_notch_filter = ${16|true,false|},",
+      "  // Считать компенсацию температуры холодного спая",
+      "  .read_junction       = ${17|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок чтения настроек аналоговых входов модулей Alpha-X"
+  },
+  
+  "AlphaXModule_AnalogOutputSetup": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_AnalogOutputSetup",
+    "body": [
+      "AlphaXModule_AnalogOutputSetup ${1:analog_output_setup} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master               = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device               = &${3:alphax_module},",
+      "  // Номер настраиваемого канала",
+      "  .channel              = AlphaXModule::${4|AOUTPUT_CHANNEL1,AOUTPUT_CHANNEL2,AOUTPUT_CHANNEL3,AOUTPUT_CHANNEL4|},",
+      "  // Записывать тип выходного сигнала",
+      "  .write_type           = ${5|true,false|},",
+      "  // Записывать нижний предел нормализации аналогового выхода",
+      "  .write_normalize_low  = ${6|true,false|},",
+      "  // Записывать верхний предел нормализации аналогового выхода",
+      "  .write_normalize_high = ${7|true,false|},",
+      "  // Записывать безопасное значение аналогового выхода",
+      "  .write_safe_value     = ${8|true,false|},",
+      "  // Тип выходного сигнала",
+      "  .type                 = alphax_parameter::AOUTPUT_TYPE::${9|UNIFIED_0_20_MA,UNIFIED_4_20_MA,UNIFIED_0_10_V,UNIFIED_20_0_MA,UNIFIED_20_4_MA,UNIFIED_10_0_V|},",
+      "  // Нижний предел нормализации аналогового выхода",
+      "  .normalize_low        = ${10:0},",
+      "  // Верхний предел нормализации аналогового выхода",
+      "  .normalize_high       = ${11:10000},",
+      "  // Безопасное значение аналогового выхода",
+      "  .safe_value           = ${12:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок настройки аналоговых выходов Alpha-X"
+  },
+
+  "AlphaXModule_AnalogOutputReadSettings": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_AnalogOutputReadSettings",
+    "body": [
+      "AlphaXModule_AnalogOutputReadSettings ${1:analog_output_read_settings} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master              = &${2:modbus_master},",
+      "  // Считываемое устройство",
+      "  .device              = &${3:alphax_module},",
+      "  // Номер считываемого канала",
+      "  .channel             = AlphaXModule::${4|AOUTPUT_CHANNEL1,AOUTPUT_CHANNEL2,AOUTPUT_CHANNEL3,AOUTPUT_CHANNEL4|},",
+      "  // Считать тип выходного сигнала",
+      "  .read_type           = ${5|true,false|},",
+      "  // Считать нижний предел нормализации аналогового выхода",
+      "  .read_normalize_low  = ${6|true,false|},",
+      "  // Считать верхний предел нормализации аналогового выхода",
+      "  .read_normalize_high = ${7|true,false|},",
+      "  // Считать безопасное значение аналогового выхода",
+      "  .read_safe_value     = ${8|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок чтения настроек аналоговых выходов Alpha-X"
+  },
+
+  "AlphaXModule_FactoryReset": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_FactoryReset",
+    "body": [
+      "AlphaXModule_FactoryReset ${1:module_factory_reset} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master       = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device       = &${3:alphax_module},",
+      "  // Сбрасывает настройки Modbus",
+      "  .reset_modbus = ${4|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок сброса на заводские настройки модулей Alpha-X"
+  },
+
+  "AlphaXModule_SaveParameters": {
+    "scope": "cpp",
+    "prefix": "AlphaXModule_SaveParameters",
+    "body": [
+      "AlphaXModule_SaveParameters ${1:module_save_parameters} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master        = &${2:modbus_master},",
+      "  // Настраиваемое устройство",
+      "  .device        = &${3:alphax_module},",
+      "  // Обновляет настройки Modbus после сохранения параметров",
+      "  .config_modbus = ${4|true,false|}",
+      "});\n"
+    ],
+    "description": "Функциональный блок сохранения текущих настроек во FLASH-память модулей Alpha-X"
+  },
+
+  // Функциональные блоки plc/fb_device.h
+
+  "DevicePollChannelNumberStatus": {
+    "scope": "cpp",
+    "prefix": "DevicePollChannelNumberStatus",
+    "body": [
+      "DevicePollChannelNumberStatus ${1:device_poll_channel_number_status} ({",
+      "  // Устройство",
+      "  .device  = &${2:user_device},",
+      "  // Номер канала опроса",
+      "  .channel = ${3:0}",
+      "});\n"
+    ],
+    "description": "Считывает состояние канала опроса в устройстве по номеру канала"
+  },
+
+  "DevicePollChannelStatus": {
+    "scope": "cpp",
+    "prefix": "DevicePollChannelStatus",
+    "body": [
+      "DevicePollChannelStatus ${1:device_poll_channel_status} ({",
+      "  // Канал опроса",
+      "  .poll_channel = &${2:user_poll_channel}",
+      "});\n"
+    ],
+    "description": "Считывает состояние канала опроса"
+  },
+
+  // Функциональные блоки и прочее plc/fb_modbus_device.h
+
+  "ModbusBufferDevice": {
+    "scope": "cpp",
+    "prefix": "ModbusBufferDevice",
+    "body": [
+      "ModbusBufferDevice<${2:1}> ${1:modbus_buffer_device} ({",
+       "  // Адрес устройства Modbus",
+       "  .device_address {${3:1}},",
+       "  // Период опроса, мс (0 - опрос выключен)",
+       "  .poll_period    {${4:10}},",
+       "  // Флаг постоянной записи в устройство (false - постоянное чтение)",
+       "  .auto_write     {${5|false,true|}},",
+       "  // Modbus функция записи",
+       "  .function_write {${6|16,6|}},",
+       "  // Modbus функция чтения",
+       "  .function_read  {${7|3,4|}},",
+       "  // Первый адрес регистра Modbus в канале опроса",
+       "  .register_start_address {${8:0}},",
+       "  // Максимальное кол-во регистров в одном запросе Modbus (0 - стандарт)",
+       "  .request_registers      {${9:0}}",
+       "});\n"
+    ],
+    "description": "Автоопрос буфера регистров Modbus"
+  },
+
+  "ModbusCoilBufferDevice": {
+    "scope": "cpp",
+    "prefix": "ModbusCoilBufferDevice",
+    "body": [
+      "ModbusCoilBufferDevice<${2:1}> ${1:modbus_coil_buffer_device} ({",
+       "  // Адрес устройства Modbus",
+       "  .device_address {${3:1}},",
+       "  // Период опроса, мс (0 - опрос выключен)",
+       "  .poll_period    {${4:10}},",
+       "  // Флаг постоянной записи в устройство (false - постоянное чтение)",
+       "  .auto_write     {${5|false,true|}},",
+       "  // Modbus функция записи",
+       "  .function_write {${6|15,5|}},",
+       "  // Modbus функция чтения",
+       "  .function_read  {${7|1,2|}},",
+       "  // Первый адрес регистра Modbus в канале опроса",
+       "  .register_start_address {${8:0}},",
+       "  // Максимальное кол-во регистров в одном запросе Modbus (0 - стандарт)",
+       "  .request_registers      {${9:0}}",
+       "});\n"
+    ],
+    "description": "Автоопрос буфера Coils Modbus"
+  },
+
+  // Функциональные блоки plc/fb_modbus.h
+
+  "COM-port as Modbus Slave": {
+    "scope": "cpp",
+    "prefix": "ModbusSlave",
+    "body": [
+      "ModbusSlave ${1:modbus_slave} ({",
+      "  // Номер COM-порта",
+      "  .com               = ${2|COM1,COM2,COM3,COM_USB|},",
+      "  // Таблица Holding Registers",
+      "  .holding_registers = &${3:holding_buffer},",
+      "  // Таблица Input Registers",
+      "  .input_registers   = ${4:nullptr},",
+      "  // Таблица Coils",
+      "  .coils             = ${5:nullptr},",
+      "  // Таблица Discrete Inputs",
+      "  .discrete_inputs   = ${6:nullptr},",
+      "  // Адрес Slave в сети Modbus",
+      "  .address           = ${7:1},",
+      "  // Скорость обмена, бит/с",
+      "  .baudrate          = ${8|115200,256000,128000,76800,57600,38400,28800,19200,14400,9600,4800,2400|},",
+      "  // Четность",
+      "  .parity            = ${9|COM_PARITY_NONE,COM_PARITY_ODD,COM_PARITY_EVEN|},",
+      "  // Кол-во стоп-битов",
+      "  .stop_bits         = ${10|1,2|},",
+      "  // Пауза перед отправкой ответа (мс)",
+      "  .poll_delay        = ${11:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок Modbus Slave"
+  },
+
+  "ModbusSlaveLastResponseTime": {
+    "scope": "cpp",
+    "prefix": "ModbusSlaveLastResponseTime",
+    "body": [
+      "ModbusSlaveLastResponseTime ${1:modbus_slave_last_response_time} ({",
+      "  // Функциональный блок Modbus Slave",
+      "  .slave = &${2:modbus_slave}",
+      "});\n"
+    ],
+    "description": "Определяет время последнего обмена Modbus Slave с мастером"
+  },
+
+
+  "COM-port as Modbus Master": {
+    "scope": "cpp",
+    "prefix": "ModbusMaster",
+    "body": [
+      "ModbusMaster ${1:modbus_master} ({",
+      "  // Номер COM-порта",
+      "  .com              = ${2|COM1,COM2,COM3,COM_USB|},",
+      "  // Список устройств для автоматического опроса",
+      "  .devices          = ${3:{\\}},",
+      "  // Скорость обмена, бит/с",
+      "  .baudrate         = ${4|115200,256000,128000,76800,57600,38400,28800,19200,14400,9600,4800,2400|},",
+      "  // Четность",
+      "  .parity           = ${5|COM_PARITY_NONE,COM_PARITY_ODD,COM_PARITY_EVEN|},",
+      "  // Кол-во стоп-битов",
+      "  .stop_bits        = ${6|1,2|},",
+      "  // Пауза перед отправкой команды опроса (мс)",
+      "  .poll_delay       = ${7:0},",
+      "  // Пауза после отправки широковещательного запроса (мс)",
+      "  .turnaround_delay = ${8:100},",
+      "  // Время ожидания ответа (мс)",
+      "  .response_timeout = ${9:300},",
+      "  // Количество попыток связи",
+      "  .failed_attempts  = ${10:3},",
+      "  // Время восстановления опроса (мс)",
+      "  .restore_timeout  = ${11:3000}",
+      "});\n"
+    ],
+    "description": "Функциональный блок Modbus Master"
+  },
+
+  "Modbus Master Request": {
+    "scope": "cpp",
+    "prefix": "ModbusMasterRequest",
+    "body": [
+      "ModbusMasterRequest ${1:request} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master               = &${2:modbus_master},",
+      "  // Адрес опрашиваемого устройства",
+      "  .device_address       = ${3:1},",
+      "  // Номер функции Modbus",
+      "  .function             = ${4:3},",
+      "  // Начальный адрес регистров Modbus в запросе",
+      "  .starting_address     = ${5:0},",
+      "  // Указатель на таблицу регистров",
+      "  .buffer               = &${6:request_buffer},",
+      "  // Общее кол-во регистров Modbus",
+      "  .registers_count      = ${7:0},",
+      "  // Максимальное кол-во регистров Modbus в одном запросе к устройству",
+      "  .device_max_registers = ${8:0},",
+      "  // Время ожидания ответа в запросе, мс (0 - настройки из Modbus Master)",
+      "  .response_timeout     = ${9:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок запросов Modbus Master"
+  },
+
+  "ModbusMasterWriteSingleRegistersList": {
+    "scope": "cpp",
+    "prefix": "ModbusMasterWriteSingleRegistersList",
+    "body": [
+      "ModbusMasterWriteSingleRegistersList ${1:write_single_registers_list} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master           = &${2:modbus_master},",
+      "  // Адрес записываемого устройства",
+      "  .device_address   = ${3:1},",
+      "  // Функция записи",
+      "  .function         = ${4:6},",
+      "  // Список значений \"адрес регистра/значение регистра\" для записи",
+      "  .list             = &${5:modbus_register_pair_list},",
+      "  // Время ожидания ответа в запросе, мс (0 - настройки из Modbus Master)",
+      "  .response_timeout = ${6:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок записи списка регистров по одному"
+  },
+
+  "ModbusMasterReadSingleRegistersList": {
+    "scope": "cpp",
+    "prefix": "ModbusMasterReadSingleRegistersList",
+    "body": [
+      "ModbusMasterReadSingleRegistersList ${1:read_single_registers_list} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master           = &${2:modbus_master},",
+      "  // Адрес опрашиваемого устройства",
+      "  .device_address   = ${3:1},",
+      "  // Функция чтения (определяет область регистров Modbus)",
+      "  .function         = ${4:6},",
+      "  // Список значений \"адрес регистра/значение регистра\" для чтения",
+      "  .list             = &${5:modbus_register_pair_list},",
+      "  // Время ожидания ответа в запросе, мс (0 - настройки из Modbus Master)",
+      "  .response_timeout = ${6:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок записи списка регистров по одному"
+  },
+
+  "ModbusMasterParameterSetup": {
+    "scope": "cpp",
+    "prefix": "ModbusMasterParameterSetup",
+    "body": [
+      "ModbusMasterParameterSetup ${1:parameter_setup} ({",
+      "  // Modbus Master для отправки запроса",
+      "  .master           = &${2:modbus_master},",
+      "  // Устройство (должно быть nullptr если не используется)",
+      "  .device           = &${3:user_device},",
+      "  // Адрес устройства в сети Modbus (используется если не указано устройство)",
+      "  .device_address   = ${4:1},",
+      "  // Таблица параметров",
+      "  .table            = &${5:parameter_table},",
+      "  // Адрес первого регистра таблицы параметров в устройстве",
+      "  .table_address    = ${6:0},",
+      "  // Флаг чтения настроек в таблицу параметров",
+      "  .read             = ${7|false,true|},",
+      "  // Функция чтения из таблицы параметров",
+      "  .read_function    = ${8:3},",
+      "  // Функция записи в таблицу параметров",
+      "  .write_function   = ${9:16},",
+      "  // Время ожидания ответа в запросе, мс (0 - настройки из Modbus Master)",
+      "  .response_timeout = ${10:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок настройки таблицы параметров в устройстве Modbus"
+  },
+
+  // Функциональные блоки plc/fb_serial_port.h
+
+  "COM-port Custom Protocol": {
+    "scope": "cpp",
+    "prefix": "SerialPort",
+    "body": [
+      "SerialPort ${1:serial_port} ({",
+      "  // Номер COM-порта",
+      "  .com       = ${2|COM1,COM2,COM3,COM_USB|},",
+      "  // Скорость обмена, бит/с",
+      "  .baudrate  = ${3|115200,256000,128000,76800,57600,38400,28800,19200,14400,9600,4800,2400|},",
+      "  // Четность",
+      "  .parity    = ${4|COM_PARITY_NONE,COM_PARITY_ODD,COM_PARITY_EVEN|},",
+      "  // Кол-во стоп-битов",
+      "  .stop_bits = ${5|1,2|}",
+      "});\n"
+    ],
+    "description": "ФБ прямого доступа к последовательному порту"
+  },
+
+  "COM-port Custom Write": {
+    "scope": "cpp",
+    "prefix": "SerialPortWrite",
+    "body": [
+      "SerialPortWrite ${1:serial_port_write} ({",
+      "  // ФБ прямого доступа к порту",
+      "  .port        = &${2:serial_port},",
+      "  // Буфер отправки посылки",
+      "  .send_buffer = ${3:send_array}",
+      "});\n"
+    ],
+    "description": "Функциональный блок отправки посылки через прямой доступ к последовательному порту"
+  },
+
+  "COM-port Custom Read": {
+    "scope": "cpp",
+    "prefix": "SerialPortRead",
+    "body": [
+      "SerialPortRead ${1:serial_port_read} ({",
+      "  // ФБ прямого доступа к порту",
+      "  .port             = &${2:serial_port},",
+      "  // Буфер приема посылки",
+      "  .read_buffer      = ${3:read_array},",
+      "  // Условие завершения приема",
+      "  .stop_condition   = ${4|ReadStopConditionPause(10),ReadStopConditionFull(),ReadStopConditionSymbol('\\n'),ReadStopConditionString(\"stop\")|},",
+      "  // Время ожидания ответа (мс). \"0\" - максимальное время ожидания",
+      "  .response_timeout = ${5:1000},",
+      "  // Время паузы перед началом приема (мс)",
+      "  .response_delay   = ${6:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок приема посылки через прямой доступ к последовательному порту"
+  },
+
+  "COM-port Custom Write Read": {
+    "scope": "cpp",
+    "prefix": "SerialPortWriteRead",
+    "body": [
+      "SerialPortWriteRead ${1:serial_port_writeread}  ({",
+      "  // ФБ прямого доступа к порту",
+      "  .port             = &${2:serial_port},",
+      "  // Буфер отправки посылки",
+      "  .send_buffer      = ${3:send_array},",
+      "  // Буфер приема ответа",
+      "  .read_buffer      = ${4:read_array},",
+      "  // Условие завершения приема",
+      "  .stop_condition   = ${5|ReadStopConditionPause(10),ReadStopConditionFull(),ReadStopConditionSymbol('\\n'),ReadStopConditionString(\"stop\")|},",
+      "  // Время ожидания ответа (мс)",
+      "  .response_timeout = ${6:1000},",
+      "  // Время паузы между отправкой и приемом (мс)",
+      "  .response_delay   = ${7:0}",
+      "});\n"
+    ],
+    "description": "Функциональный блок отправки и приема посылки через прямой доступ к последовательному порту"
+  }
+}

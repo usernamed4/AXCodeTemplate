@@ -1,0 +1,11 @@
+# Бинарники
+/build/*
+
+# Backup
+*.bak
+
+# Настройки VSCode
+/.vscode/*
+!/.vscode/tasks.json
+!/.vscode/settings.json
+!/.vscode/axcode_snippets.code-snippets

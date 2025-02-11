@@ -1,0 +1,20 @@
+# Тулчейн таргета
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR RISCV)
+
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+set(CMAKE_SYSROOT ${CMAKE_CURRENT_LIST_DIR})
+
+set(CMAKE_EXECUTABLE_SUFFIX_C   .elf)
+set(CMAKE_EXECUTABLE_SUFFIX_CXX .elf)
+set(CMAKE_EXECUTABLE_SUFFIX_ASM .elf)
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(CMAKE_C_COMPILER   riscv-none-elf-gcc)
+set(CMAKE_CXX_COMPILER riscv-none-elf-g++)
+
+set(CMAKE_CXX_FLAGS "-fno-exceptions -fno-rtti -fno-use-cxa-atexit -Werror=reorder")

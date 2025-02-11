@@ -1,0 +1,10 @@
+{
+  "editor.rulers": [
+    80
+  ],
+  "editor.tabSize": 2,
+  "cmake.configureOnOpen": true,
+  "vscode-serial-monitor.lineEnding": "\r\n",
+  "axcode.executablePath": "build/AXCODE_USER_PROGRAM.elf",
+  "axcode.gdbPath": "riscv-none-elf-gdb"
+}

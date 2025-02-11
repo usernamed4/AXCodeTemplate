@@ -1,0 +1,19 @@
+/**
+\defgroup ulib_fb Функциональные блоки пользовательской библиотеки платформы AXCode
+\date 18.03.24
+
+\details
+
+\section ulib_fb_section_example Примеры создания блоков
+
+Заголовочный файл:
+\include{lineno} fb_etriga_example.h
+
+Файл с кодом:
+\include{lineno} fb_etriga_example.cpp
+*/
+
+/**
+\example fb_etriga_example.h
+Пример создания функционального блока типа ETrigA
+*/

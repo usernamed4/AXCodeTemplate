@@ -1,0 +1,17 @@
+/**
+\defgroup ulib_fb_triggers Триггеры
+\ingroup ulib_fb
+\date 18.03.24
+
+\details
+
+\section ulib_fb_triggers_section_example Примеры работы
+
+\include{lineno} fb_triggers_example.cpp
+
+*/
+
+/**
+\example fb_triggers_example.cpp
+Примеры работы с функциональными блоками триггеров
+*/
