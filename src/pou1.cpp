@@ -16,16 +16,16 @@ using namespace plc;
 
   DiscreteOutputArray<2> DO (cpu_io);
 
-  ModbusBuffer<10> buffer;
+  ModbusBuffer<1520> buffer;
 
   ModbusSlave slave_com2 ({
       .com = COM2,
       .holding_registers = &buffer,
       .input_registers   = &buffer,
-      .address   = 1,
+      .address   = 15,
       .baudrate  = 115200,
       .parity    = COM_PARITY_NONE,
-      .stop_bits = 1
+      .stop_bits = 2
       });
 
   uint32_t i = 0;
