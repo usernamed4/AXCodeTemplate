@@ -27,5 +27,8 @@ void POU3()
   }
 
   // Код, выполняемый циклически:
-
+  for(auto i = 0; i<=10; i++)
+  {
+    print_debug("%i - iterations\r\n", i);
+  }
 }
