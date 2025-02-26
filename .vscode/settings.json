@@ -6,5 +6,9 @@
   "cmake.configureOnOpen": true,
   "vscode-serial-monitor.lineEnding": "\r\n",
   "axcode.executablePath": "build/AXCODE_USER_PROGRAM.elf",
-  "axcode.gdbPath": "riscv-none-elf-gdb"
+  "axcode.gdbPath": "riscv-none-elf-gdb",
+  "files.associations": {
+    "*.go": "go",
+    "system_error": "cpp"
+  }
 }
