@@ -19,10 +19,9 @@ uint32_t i {0};
 
 void _delay(uint32_t delay)
 {
-  uint32_t t1 = GetSysTicks();
-  while (t1 < GetSysTicks() - delay)
-  {
-    ;
+  uint32_t start = GetSysTicks();
+  while (GetSysTicks() - start < delay) {
+    // Можно добавить nop(); для того чтобы уменьшить нагрузку на процессор
   }
 }
 
@@ -42,6 +41,7 @@ ModbusMaster modbus_master ({
   .failed_attempts  = 3,      // Количество попыток связи
   .restore_timeout  = 3000    // Время восстановления опроса (мс)
 });
+
 
 ModbusMaster modbus_master2 ({
   // Номер COM-порта
@@ -164,7 +164,7 @@ void POU1()
       etl::string<32> analog_data;
       etl::string_stream stream{analog_data};
 
-      print_debug("                T = %d.%d\r\n", pid_ai/10, pid_ai%10);
+      print_debug("                T = %d.%d С\r\n", pid_ai/10, pid_ai%10);
 
       stream << etl::setprecision(2) << ai_AI[0].value() << "\r\n";
       print_debug("Канал температуры = ");
@@ -192,7 +192,7 @@ void POU1()
       analog_data.clear();
       
 
-      stream << etl::setprecision(2) << ai_DAIO[1].value() << "%\r\n";
+      stream << etl::setprecision(2) << ai_DAIO[1].value() << " C\r\n";
       print_debug("     Реостат DAIO = ");
       print_debug(stream.str());
       analog_data.clear();
@@ -206,7 +206,6 @@ void POU1()
     myString.clear();
   }
 
-  // if (ai_DAIO[0].value() > 55.5) do_DAIO[2] = true;
   if (di_DAIO[0].front()){ do_DAIO[0] = true;
   } else if (di_DAIO[1].front()){ do_DAIO[1] = true;
   } else if (di_DAIO[0].back()){ do_DAIO[0] = false;
@@ -222,7 +221,7 @@ void POU1()
   } else if (di_CPU[1].back()){ do_CPU[1] = false;
   } 
   
-  request_buffer.writeUint16(2, ai_DAIO[0]);
+
 
   // print_debug("%d %d \r\n", HMI_data.readFloat(4), HMI_data.readFloat(6));
   // print_debug("%d %d \r\n", ai_AI[6].value(), ai_AI[7].value());
@@ -232,6 +231,8 @@ void POU1()
   HMI_data.writeFloat(3, ai_AI[6].value());
   HMI_data.writeFloat(5, ai_AI[7].value());
   HMI_data.writeInt16(7, request_buffer.readUint16(1)/10);
+  HMI_data.writeFloat(8, ai_DAIO[1].value());
+
 
   request();
 }

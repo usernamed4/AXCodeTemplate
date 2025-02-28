@@ -5,9 +5,9 @@
       "label": "load",
       "type": "shell",
       "windows": {
-        "command": "target/utils/AXCodeLoader1204.exe",
+        "command": "target/utils/AXCodeLoader.exe",
         "args": [
-          "COM6",            // COM-порт, согласно диспетчеру устройств компьютера
+          "COM6",// COM-порт, согласно диспетчеру устройств компьютера
           "-a",
           "1",               // Modbus-адрес устройства
           "-b",
