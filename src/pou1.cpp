@@ -30,16 +30,39 @@ ModbusBuffer<200> HMI_data;
 
 ModbusMasterPoll poll(moduleDAIO, moduleAI);
 
-ModbusMaster modbus_master ({
-  .com        = COM1,         // Номер COM-порта
-  .devices    = poll,      // Список устройств для авт.опроса
-  .baudrate   = 115200,       // Скорость обмена, бит/с
-  .parity     = COM_PARITY_NONE,  // Четность
-  .stop_bits  = 1,            // Кол-во стоп-битов
-  .poll_delay = 0,            // Пауза перед отправкой команды (мс)
-  .response_timeout = 300,    // Время ожидания ответа (мс)
-  .failed_attempts  = 3,      // Количество попыток связи
-  .restore_timeout  = 3000    // Время восстановления опроса (мс)
+// ModbusMaster modbus_master ({
+//   .com        = COM1,         // Номер COM-порта
+//   .devices    = poll,      // Список устройств для авт.опроса
+//   .baudrate   = 115200,       // Скорость обмена, бит/с
+//   .parity     = COM_PARITY_NONE,  // Четность
+//   .stop_bits  = 1,            // Кол-во стоп-битов
+//   .poll_delay = 0,            // Пауза перед отправкой команды (мс)
+//   .response_timeout = 300,    // Время ожидания ответа (мс)
+//   .failed_attempts  = 3,      // Количество попыток связи
+//   .restore_timeout  = 3000    // Время восстановления опроса (мс)
+// });
+
+ModbusSlave modbus_slave2 ({
+  // Номер COM-порта
+  .com               = COM1,
+  // Таблица Holding Registers
+  .holding_registers = &request_buffer,
+  // Таблица Input Registers
+  .input_registers   = nullptr,
+  // Таблица Coils
+  .coils             = nullptr,
+  // Таблица Discrete Inputs
+  .discrete_inputs   = nullptr,
+  // Адрес Slave в сети Modbus
+  .address           = 1,
+  // Скорость обмена, бит/с
+  .baudrate          = 115200,
+  // Четность
+  .parity            = COM_PARITY_NONE,
+  // Кол-во стоп-битов
+  .stop_bits         = 1,
+  // Пауза перед отправкой ответа (мс)
+  .poll_delay        = 0
 });
 
 
